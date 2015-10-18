@@ -27,6 +27,10 @@ var categories = require('./routes/categories');
 var app = express();
 app.locals.moment = require('moment');
 
+app.locals.truncateText = function (text, length) {
+  var truncatedText = text.substring(0, length);
+  return truncatedText;
+};
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -38,7 +42,7 @@ app.post(multer({
 }));
 
 // uncomment after placing your favicon in /public
-//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({

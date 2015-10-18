@@ -10,6 +10,15 @@ var upload = multer({
   dest: './public/images/uploads'
 });
 
+router.get('/show/:id', function (req, res, next) {
+  var posts = db.get('posts');
+  posts.findById(req.params.id, function (err, post) {
+    res.render('show', {
+      'post': post
+    });
+  });
+});
+
 /* Add Posts */
 router.get('/add', function (req, res, next) {
   var categories = db.get('categories');
@@ -28,7 +37,6 @@ router.post('/add', upload.single('mainimage'), function (req, res, next) {
   var body = req.body.body;
   var author = req.body.author;
   var date = new Date();
-  console.log(req.file);
 
   if (req.file) {
     var mainImageName = req.file.filename;
@@ -74,6 +82,60 @@ router.post('/add', upload.single('mainimage'), function (req, res, next) {
         res.redirect('/');
       }
     });
+  }
+});
+
+router.post('/addcomment', function (req, res, next) {
+  // Get Form Values
+  var name = req.body.name;
+  var email = req.body.email;
+  var body = req.body.body;
+  var postid = req.body.postid;
+  var commentdate = new Date();
+
+  // Form Validation
+  req.checkBody('name', 'Title field is required').notEmpty();
+  req.checkBody('email', 'Email field is required').notEmpty();
+  req.checkBody('email', 'Email must be formatted correctly').isEmail();
+  req.checkBody('body', 'Body field is required').notEmpty();
+
+  var errors = req.validationErrors();
+
+  if (errors) {
+    var posts = db.get('posts');
+    posts.findById(postid, function (err, post) {
+      res.render('show', {
+        'errors': errors,
+        'post': post,
+        'name': name,
+        'email': email,
+        'body': body
+      });
+    });
+  } else {
+    var comment = {
+      'name': name,
+      'email': email,
+      'body': body,
+      'commentdate': commentdate
+    };
+    var posts = db.get('posts');
+    posts.update({
+        '_id': postid
+      }, {
+        $push: {
+          'comments': comment
+        }
+      },
+      function (err, addcomment) {
+        if (err) {
+          throw err;
+        } else {
+          req.flash('success', 'Comment Added');
+          res.location('/');
+          res.redirect('/');
+        }
+      });
   }
 });
 

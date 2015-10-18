@@ -79,6 +79,10 @@ footer {
   background: #ccc;
 }
 
+.meta a{
+  text-decoration:underline;
+}
+
 a.more {
     display: block;
     width: 80px;
@@ -93,7 +97,7 @@ a.more {
   padding-bottom: 20px;
 }
 
-input , select, textarea {
+input, select, textarea {
   margin-bottom: 15px;
 }
 
@@ -102,7 +106,7 @@ label{
   width: 180px;
 }
 
-input[type='text'], select, textarea {
+input[type='text'], input[type='email'], select, textarea {
   padding: 3px;
   height: 20px;
   width: 200px;
@@ -121,6 +125,29 @@ textarea{
 div#cke_body {
     width: 600px;
     margin: 20px 0;
+}
+
+.post img, .show img {
+  width: 100%;
+}
+
+.comment-form {
+  background: #ccc;
+}
+
+.comment {
+  background: #ccc;
+  padding: 5px;
+  boarder:#666 solid 1px;
+  margin: 15px 0 20px;
+}
+
+.comment-name {
+  font-weight: bold;
+}
+
+.comment-date {
+  font-size: 10px;
 }
 
 .alert {
@@ -147,3 +174,5 @@ ul.success li{
   boarder-color: #d6e9c6;
   list-style: none;
 }
+
+
